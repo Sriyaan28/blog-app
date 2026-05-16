@@ -23,7 +23,7 @@ app.use(cookieParser())
 
 // to allow frontend application to send requests to backend
 app.use(cors({
-    origin:['http://localhost:5173'],
+    origin:['http://localhost:5173','http://localhost:5174','https://blog-app-theta-ruby.vercel.app'],
     credentials:true
 }))
 
@@ -39,7 +39,11 @@ const connectDB = async()=>{
     {
         await connect(process.env.DB_URL)
         console.log("DB connected")
-        app.listen(PORT,()=>console.log(`Server listening on ${PORT}`))
+        
+        if(process.env.STATE !== "DEPLOYED")
+        {
+            app.listen(PORT,()=>console.log(`Server listening on ${PORT}`))
+        }
     }
     catch(err)
     {
