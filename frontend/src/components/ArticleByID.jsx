@@ -50,7 +50,7 @@ function ArticleByID() {
       setLoading(true);
 
       try {
-        const res = await axios.get(`http://localhost:4000/user-api/article/${id}`, { withCredentials: true });
+        const res = await axios.get(`https://blog-app-theta-ruby.vercel.app/user-api/article/${id}`, { withCredentials: true });
 
         setArticle(res.data.payload);
       } catch (err) {
@@ -80,7 +80,7 @@ function ArticleByID() {
 
     try {
       const res = await axios.patch(
-        "http://localhost:4000/author-api/articles",
+        "https://blog-app-theta-ruby.vercel.app/author-api/articles",
         { articleId: article._id, isArticleActive: newStatus },
         { withCredentials: true },
       );

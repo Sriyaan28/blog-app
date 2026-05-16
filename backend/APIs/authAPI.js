@@ -2,6 +2,7 @@ import exp from 'express'
 import { registerController } from '../controller/authControllers/register.controller.js'
 import { loginController } from '../controller/authControllers/login.controller.js'
 import { logoutController } from '../controller/authControllers/logout.controller.js'
+import { checkAuthController } from '../controller/authControllers/checkAuth.controller.js'
 import { verifyToken } from '../middleware/verifyToken.js'
 import { passwordController } from '../controller/authControllers/password.controller.js'
 
@@ -16,5 +17,8 @@ authApp.post('/login',loginController)
 // route for logout
 authApp.get('/logout',logoutController)
 
+// route for auth check
+authApp.get('/check-auth', verifyToken('USER','AUTHOR','ADMIN'), checkAuthController)
+
 // route for changing pass
-authApp.put('/password',verifyToken("USER","AUTHOR","ADMIN"),passwordController)
+authApp.put('/password',verifyToken('USER','AUTHOR','ADMIN'),passwordController)
