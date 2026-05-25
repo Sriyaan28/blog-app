@@ -1,5 +1,5 @@
 import { useAuth } from "../store/useAuth.js";
-import { useNavigate } from "react-router";
+import { useNavigate, Outlet } from "react-router";
 import {
   loadingClass,
   errorClass,
@@ -55,7 +55,7 @@ function AdminProfile() {
       <div className="mt-4">
         <h3 className="text-lg font-semibold text-[#1d1d1f] mb-4">Admin Controls</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white border border-[#e8e8ed] p-6 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer">
+          <div className="bg-white border border-[#e8e8ed] p-6 rounded-2xl shadow-sm hover:shadow-md transition cursor-pointer" onClick={() => navigate("users-list")}>
             <h4 className="font-semibold text-[#1d1d1f]">Manage Users</h4>
             <p className="text-sm text-[#6e6e73] mt-2">View and manage all registered users.</p>
           </div>
@@ -68,6 +68,11 @@ function AdminProfile() {
             <p className="text-sm text-[#6e6e73] mt-2">Configure application-wide parameters.</p>
           </div>
         </div>
+      </div>
+      
+      {/* OUTLET FOR NESTED ROUTES */}
+      <div className="mt-8">
+        <Outlet />
       </div>
     </div>
   );

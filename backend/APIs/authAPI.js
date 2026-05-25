@@ -5,11 +5,12 @@ import { logoutController } from '../controller/authControllers/logout.controlle
 import { checkAuthController } from '../controller/authControllers/checkAuth.controller.js'
 import { verifyToken } from '../middleware/verifyToken.js'
 import { passwordController } from '../controller/authControllers/password.controller.js'
+import { upload } from '../config/multer.js'
 
 export const authApp = exp.Router()
 
 // route for register
-authApp.post('/register',registerController)
+authApp.post('/register', upload.single('profileImageUrl'), registerController)
 
 // route for login
 authApp.post('/login',loginController)

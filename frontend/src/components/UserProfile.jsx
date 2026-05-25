@@ -1,7 +1,7 @@
 import { useAuth } from "../store/useAuth.js";
 import { useNavigate } from "react-router";
 
-import axios from "axios";
+import { api } from "../api.js";
 import { useEffect, useState } from "react";
 
 import {
@@ -27,14 +27,12 @@ function UserProfile() {
     const getArticles = async () => {
       setLoading(true);
       try {
-        //read articles of all authors
-        let res=await axios.get("http://localhost:4000/user-api/articles",{withCredentials:true})
-        //update articles state
-        if(res.status===200){
-          setArticles((await res).data.payload)
+        const res = await api.get("/user-api/article");
+        if (res.status === 200) {
+          setArticles(res.data.payload);
         }
       } catch (err) {
-        setError(err.response?.data?.error || "Something went wrong");
+        setError(err.response?.data?.message || "Something went wrong");
       } finally {
         setLoading(false);
       }

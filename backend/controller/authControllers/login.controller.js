@@ -23,13 +23,12 @@ export const loginController = async (req, res) => {
     }
     // if password valid, then login
 
-    // create token
     const signedToken = sign({id:user._id,email:email,role:user.role},process.env.SECRET_KEY,{expiresIn: "1h"})
-    // cookie header
-    res.cookie("token",signedToken,{
+    const isProduction = process.env.STATE === "DEPLOYED" || process.env.NODE_ENV === "production";
+    res.cookie("token", signedToken, {
         httpOnly: true,
-        secure: false,  // true for production server
-        sameSite: "lax"
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     })
 
     // remove password from user

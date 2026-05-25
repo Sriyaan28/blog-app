@@ -6,6 +6,11 @@ import Login from "./components/Login.jsx"
 import UserProfile from "./components/UserProfile.jsx"
 import AuthorProfile from "./components/AuthorProfile.jsx"
 import AdminProfile from "./components/AdminProfile.jsx"
+import AuthorArticles from "./components/AuthorArticles.jsx"
+import WriteArticles from "./components/WriteArticles.jsx"
+import UsersList from "./components/UsersList.jsx"
+import ArticleByID from "./components/ArticleByID.jsx"
+import EditArticle from "./components/EditArticle.jsx"
 
 function App() {
   const routerObj = createBrowserRouter([
@@ -31,13 +36,36 @@ function App() {
         },
         {
           path:"author-profile",
-          element:<AuthorProfile />
+          element:<AuthorProfile />,
+          children: [
+            {
+              path: "articles",
+              element: <AuthorArticles />
+            },
+            {
+              path: "write-article",
+              element: <WriteArticles />
+            }
+          ]
         },
         {
           path:"admin-profile",
-          element:<AdminProfile />
+          element:<AdminProfile />,
+          children: [
+            {
+              path: "users-list",
+              element: <UsersList />
+            }
+          ]
+        },
+        {
+          path: "article/:id",
+          element: <ArticleByID />
+        },
+        {
+          path: "edit-article",
+          element: <EditArticle />
         }
-
       ]
     }
   ])

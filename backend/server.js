@@ -22,10 +22,12 @@ app.use(express.json())
 app.use(cookieParser())
 
 // to allow frontend application to send requests to backend
-app.use(cors({
-    origin:['http://localhost:5173','http://localhost:5174','https://blog-app-theta-ruby.vercel.app'],
-    credentials:true
-}))
+const corsOptions = {
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'https://blog-app-theta-ruby.vercel.app'],
+    credentials: true,
+};
+app.use(cors(corsOptions));
+app.options(/(.*)/, cors(corsOptions));
 
 app.use('/auth',authApp)
 app.use('/user-api',userApp)

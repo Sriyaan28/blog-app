@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { api } from "../api.js";
 import { useNavigate } from "react-router";
 import { useAuth } from "../store/useAuth.js";
 
@@ -33,14 +33,14 @@ function AuthorArticles() {
       try {
         setLoading(true);
         //read articles of current author
-        let res = await axios.get(" http://localhost:4000/author-api/articles", { withCredentials: true });
+        let res = await api.get("/author-api/article");
         if (res.status === 200) {
           setArticles(res.data.payload);
         }
         //update articles state
       } catch (err) {
         console.log(err);
-        setError(err.response?.data?.error || "Failed to fetch articles");
+        setError(err.response?.data?.message || "Failed to fetch articles");
       } finally {
         setLoading(false);
       }

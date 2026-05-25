@@ -1,11 +1,10 @@
 
 export const logoutController = (req,res)=>{
-    // delete cookie from cookie storage
-    res.clearCookie("token",{       // should contain same as login token cookie
+    const isProduction = process.env.STATE === "DEPLOYED" || process.env.NODE_ENV === "production";
+    res.clearCookie("token", {
         httpOnly: true,
-        secure: false,  
-        sameSite: "lax"
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     })
-    // send res
     res.status(200).json({message:"Logout successful"})
 }

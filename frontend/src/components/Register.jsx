@@ -13,7 +13,7 @@ import {
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 import { useState } from "react";
-import axios from "axios";
+import { api } from "../api.js";
 
 function Register() {
   const {
@@ -45,18 +45,14 @@ function Register() {
     }
    console.log(profileImageUrl)
     try {
-      //start loading
       setLoading(true);
-      //make HTTP POST req to create User in backend
-      let res = await axios.post("https://blog-app-theta-ruby.vercel.app/auth/users", formData,{withCredentials:true});
-
+      const res = await api.post("/auth/register", formData);
       if (res.status === 201) {
-        //navigate to Login
         navigate("/login");
       }
     } catch (err) {
       console.log("err in registration", err);
-      setApiError(err.response?.data?.error || "Registration failed");
+      setApiError(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useEffect } from "react";
-import axios from "axios";
+import { api } from "../api.js";
 
 
 import {
@@ -33,23 +33,20 @@ function EditArticle() {
   useEffect(() => {
     if (!article) return;
 
-     setValue("title", article.title);
-     setValue("category", article.category);
-     setValue("content", article.content);
+    setValue("title", article.title);
+    setValue("category", article.category);
+    setValue("content", article.content);
   }, [article]);
 
   const updateArticle = async (modifiedArticle) => {
-  
+
     //add articleId to modified article
-    modifiedArticle.articleId=article._id;
-    //make PUT req to update article
-    let res=await axios.put("http://localhost:4000/author-api/articles",
-      modifiedArticle,
-      {withCredentials:true})
+    modifiedArticle.articleId = article._id;
+    let res = await api.put("/author-api/article", modifiedArticle);
     //naviagte to articleById component
-   if(res.status===200){
-    navigate(`/article/${article._id}`,{state:res.data.payload})
-   }
+    if (res.status === 200) {
+      navigate(`/article/${article._id}`, { state: res.data.payload })
+    }
   };
 
   return (

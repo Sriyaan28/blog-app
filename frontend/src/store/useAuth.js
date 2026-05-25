@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
+import { api } from "../api.js";
 
 export const useAuth = create((set) => ({
   currentUser: null,
@@ -7,13 +7,9 @@ export const useAuth = create((set) => ({
   isAuthenticated: false,
   error: null,
   login: async (userCred) => {
-    // const { role, ...userCredObj } = userCredWithRole;
     try {
-      //set loading true
       set({ loading: true, currentUser: null, isAuthenticated: false, error: null });
-      //make api call
-      let res = await axios.post("http://localhost:4000/auth/login", userCred, { withCredentials: true });
-      //update state
+      const res = await api.post("/auth/login", userCred);
       if (res.status === 200) {
         set({
           currentUser: res.data?.payload,
@@ -28,17 +24,13 @@ export const useAuth = create((set) => ({
         loading: false,
         isAuthenticated: false,
         currentUser: null,
-        //error: err,
         error: err.response?.data?.error || "Login failed",
       });
     }
   },
   logout: async () => {
     try {
-      //set loading state
-      //make logout api req
-      let res = await axios.get("http://localhost:4000/auth/logout", { withCredentials: true });
-      //update state
+      const res = await api.get("/auth/logout");
       if (res.status === 200) {
         set({
           currentUser: null,
@@ -60,7 +52,7 @@ export const useAuth = create((set) => ({
   checkAuth: async () => {
     try {
       set({ loading: true });
-      const res = await axios.get("https://blog-app-theta-ruby.vercel.app/auth/check-auth", { withCredentials: true });
+      const res = await api.get("/auth/check-auth");
 
       set({
         currentUser: res.data.payload,
@@ -68,7 +60,6 @@ export const useAuth = create((set) => ({
         loading: false,
       });
     } catch (err) {
-      // If user is not logged in → do nothing
       if (err.response?.status === 401) {
         set({
           currentUser: null,
@@ -77,8 +68,6 @@ export const useAuth = create((set) => ({
         });
         return;
       }
-
-      // other errors
       console.error("Auth check failed:", err);
       set({ loading: false });
     }
